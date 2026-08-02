@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Bir Türkiye Seçmeni Oluştur — 2023 Etkileşimli Araştırma Prototipi</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="top-rule"></div>
+    <header>
+      <div class="title-wrap">
+        <h1>Bir Türkiye seçmeni oluştur</h1>
+        <div class="eyebrow">2023 genel seçimi · etkileşim denetimli geriye dönük model</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn icon" id="randomizeBtn" type="button" aria-label="Tutarlı bir profili rastgele oluştur">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 11a8.1 8.1 0 1 0-2.4 5.8"/><path d="M20 4v7h-7"/></svg>
+          rastgele seç
+        </button>
+        <button class="btn" id="methodBtn" type="button">yöntem ve kaynaklar</button>
+      </div>
+    </header>
+
+    <div class="notice" role="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4m0 4h.01"/><path d="M10.3 3.7 2.5 17.2A2 2 0 0 0 4.2 20h15.6a2 2 0 0 0 1.7-2.8L13.7 3.7a2 2 0 0 0-3.4 0Z"/></svg>
+      <div><strong>Bu bir 2026 oy niyeti tahmini değildir.</strong> Sonuç, seçtiğiniz profile benzer bir seçmenin 2023’teki muhtemel davranışını canlandıran şeffaf bir araştırma prototipidir. Kesin bireysel tahmin olarak okunmamalıdır.</div>
+    </div>
+
+    <section class="builder" aria-label="Seçmen profili oluşturucu">
+      Türkiye’de
+      <span class="inline-select"><label class="sr-only" for="gender">cinsiyet</label><select id="gender" data-field="gender"></select></span>
+      bir seçmen düşünün. Kendisi
+      <span class="inline-select w-age"><label class="sr-only" for="age">yaş grubu</label><select id="age" data-field="age"></select></span>
+      yaşında,
+      <span class="inline-select w-wide"><label class="sr-only" for="education">eğitim düzeyi</label><select id="education" data-field="education"></select></span>
+      eğitimli ve
+      <span class="inline-select w-xwide"><label class="sr-only" for="employment">çalışma durumu</label><select id="employment" data-field="employment"></select></span>.
+      Hanesi
+      <span class="inline-select w-wide"><label class="sr-only" for="income">gelir düzeyi</label><select id="income" data-field="income"></select></span>.
+      <span class="inline-select w-xwide"><label class="sr-only" for="settlement">yerleşim türü</label><select id="settlement" data-field="settlement"></select></span>,
+      <span class="inline-select w-region"><label class="sr-only" for="region">bölge</label><select id="region" data-field="region"></select></span>
+      bölgesinde yaşıyor. Kendisi
+      <span class="inline-select w-wide"><label class="sr-only" for="marital">medeni durum</label><select id="marital" data-field="marital"></select></span>
+      ve
+      <span class="inline-select w-wide"><label class="sr-only" for="children">çocuk sayısı</label><select id="children" data-field="children"></select></span>.
+      Etnik kimliğini
+      <span class="inline-select w-wide"><label class="sr-only" for="ethnicity">etnik kimlik</label><select id="ethnicity" data-field="ethnicity"></select></span>
+      olarak belirtiyor;
+      <span class="inline-select w-wide"><label class="sr-only" for="denomination">inanç veya mezhep</label><select id="denomination" data-field="denomination"></select></span>
+      ve
+      <span class="inline-select w-xwide"><label class="sr-only" for="religiosity">dindarlık</label><select id="religiosity" data-field="religiosity"></select></span>.
+    </section>
+
+    <section class="results-shell" aria-live="polite">
+      <div class="result-head">
+        <div>
+          <div class="result-kicker">14 Mayıs 2023 milletvekili seçimi</div>
+          <h2 class="headline" id="headline">—</h2>
+        </div>
+        <div class="confidence" id="confidenceBox"></div>
+      </div>
+
+      <div class="stacked-wrap">
+        <div class="stacked" id="stackedBar" aria-label="Tahmini tercihlerin dağılımı"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="dashboard">
+        <article class="card">
+          <h2>Tüm olasılıklar</h2>
+          <div id="partyRows"></div>
+          <div class="drivers">
+            <h3>Modeli en çok iten profil unsurları</h3>
+            <div class="chips" id="driverChips"></div>
+          </div>
+        </article>
+
+        <aside class="card">
+          <h2>Katılım ve ikinci tur</h2>
+          <p class="turnout-number" id="turnoutNumber">—</p>
+          <p class="turnout-sub">14 Mayıs seçiminde sandığa gitme olasılığı. Geçersiz oy ayrı modellenmemiştir.</p>
+          <div class="gauge" aria-hidden="true"><div id="turnoutGauge"></div></div>
+
+          <div class="runoff">
+            <div class="runoff-label"><span>28 Mayıs 2023 ikinci tur</span><span id="runoffHeadline">—</span></div>
+            <div class="runoff-bar" id="runoffBar" aria-label="İkinci tur tahmini">
+              <div class="erdogan" id="erdoganSeg"></div>
+              <div class="kilicdaroglu" id="kilicdarogluSeg"></div>
+              <div class="runoff-abstain" id="runoffAbstainSeg"></div>
+            </div>
+            <div class="runoff-values"><span id="erdoganValue"></span><span id="kilicdarogluValue"></span></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="footer-tools">
+        <div class="model-note"><strong>Model durumu:</strong> YSK’nin resmî 2023 sonuçları ulusal başlangıç dağılımını verir. Profil etkileri, CSES/WVS’de ölçülebilen değişkenlere göre kurulmuş, ana etkileri, iki ve üç değişkenli koşullu etkileşimleri ve profil-tutarlılık denetimleri olan; fakat henüz doğrudan mikroveri üzerinde tahmin edilmemiş açık bir katsayı prototipidir.</div>
+        <button class="btn primary" id="copyBtn" type="button">sonucu kopyala</button>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="methodDialog">
+    <div class="modal-head"><h2>Yöntem, sınırlar ve veri kaynakları</h2><button class="close-btn" id="closeMethod" aria-label="Pencereyi kapat">×</button></div>
+    <div class="modal-body">
+      <div class="status-box"><strong>Önemli:</strong> Bu dosyadaki katsayılar, gerçek CSES mikroverisi üzerinde tahmin edilmiş nihai katsayılar değildir. Arayüzü, veri şemasını, tutarlı rastgeleleştirmeyi ve model mimarisini çalışan hâle getiren bir prototiptir. Bu nedenle yüzde değerleri kesin anket tahmini gibi kullanılmamalıdır.</div>
+
+      <h3>Model ne yapıyor?</h3>
+      <p>Her parti için 2023 resmî oy payının logaritması başlangıç puanı olarak alınır. Seçilen demografik özellikler bu puanlara küçük log-olasılık katkıları ekler. Bölge × etnik kimlik, mezhep × dindarlık, yaş × öğrencilik, eğitim × yerleşim ve medeni durum × çocuk sayısı × dindarlık gibi bağımlılıklar ayrıca uygulanır. Çocuk sahibi olmanın etkisi tek başına sabit kabul edilmez; evlilik, dindarlık, cinsiyet ve çalışma durumuna göre koşullandırılır. Sonuçlar softmax dönüşümüyle toplamı yüzde 100 olan olasılıklara çevrilir.</p>
+      <p>Katılım ayrı bir lojistik modelle hesaplanır. Parti olasılıkları katılımla çarpılır ve kalan pay “sandığa gitmeme” olarak gösterilir. İkinci tur hesabı, parlamenter parti olasılıklarının ittifak bloklarına dönüşümü ve doğrudan profil etkilerinin birlikte kullanılmasıyla üretilir.</p>
+
+      <h3>Neden bu değişkenler?</h3>
+      <p>CSES Türkiye 2023 anketi yaş, cinsiyet, eğitim, çalışma durumu, gelir, yerleşim, dinî pratik ve oy davranışı gibi çekirdek değişkenleri ölçer. WVS Türkiye 2018; mezhep, etnik kimlik, çocuk sayısı ve değer yönelimleri gibi ek değişkenler sağlar. Nihai sürümde CSES ana tahmin veri seti, WVS ise yardımcı öncüller ve duyarlılık kontrolleri için kullanılmalıdır.</p>
+
+      <h3>Nihai bilimsel sürüme geçiş</h3>
+      <ul>
+        <li>CSES Module 6 Türkiye 2023 mikroverisini indirip yalnız Türkiye örneklemini seçin.</li>
+        <li>Ağırlıklı çok kategorili lojistik veya Bayesçi hiyerarşik model tahmin edin.</li>
+        <li>Küçük partileri kısmi havuzlayın; nadir kimlik kesişimlerinde geniş belirsizlik aralıkları gösterin.</li>
+        <li>TÜİK nüfus marjinleriyle poststratifikasyon, YSK sonuçlarıyla ulusal ve bölgesel kalibrasyon uygulayın.</li>
+        <li>Çapraz doğrulama, log loss, Brier skoru ve kalibrasyon grafikleri yayımlayın.</li>
+        <li>Bu HTML’deki <code>EFFECTS</code> nesnesini tahmin edilmiş katsayılarla değiştirin.</li>
+      </ul>
+
+      <h3>Resmî ve kamusal kaynaklar</h3>
+      <ul class="source-list">
+        <li><a href="https://cses.org/data-download/cses-module-6-2021-2026/" target="_blank" rel="noopener">CSES Module 6 (Türkiye 2023 dâhil) veri ve dokümantasyon sayfası</a></li>
+        <li><a href="https://cses.org/wp-content/uploads/2024/12/TUR_2023_Design.pdf" target="_blank" rel="noopener">CSES Türkiye 2023 araştırma tasarım raporu</a></li>
+        <li><a href="https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp" target="_blank" rel="noopener">World Values Survey Wave 7 dokümantasyonu</a></li>
+        <li><a href="https://www.ysk.gov.tr/doc/dosyalar/docs/14Mayis2023/KesinSecimSonuclari/ULKE_GENELI_TOPLAMI_MM24.pdf" target="_blank" rel="noopener">YSK: 14 Mayıs 2023 milletvekili seçimi ülke geneli kesin sonucu</a></li>
+        <li><a href="https://www.ysk.gov.tr/doc/dosyalar/docs/14Mayis2023/KesinSecimSonuclari/2023CB-TumSecimSonucuIkinciTur.pdf" target="_blank" rel="noopener">YSK: 28 Mayıs 2023 Cumhurbaşkanlığı ikinci tur kesin sonucu</a></li>
+      </ul>
+
+      <h3>Yorumlama</h3>
+      <p>“%42 CHP” ifadesi, bu kişinin gerçekten CHP’ye oy verme ihtimalinin ölçüldüğü anlamına gelmez. Modelin seçilen özelliklere atadığı göreli ağırlıkların ürettiği, 2023’e sabitlenmiş bir benzerlik tahminidir. Özellikle etnik kimlik ve mezhep gibi hassas değişkenler bireysel davranışı belirlemez; yalnızca örneklem düzeyindeki ilişkileri yaklaşıklar.</p>
+    </div>
+  </dialog>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
