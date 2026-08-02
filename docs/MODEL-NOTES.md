@@ -31,7 +31,7 @@ Rastgeleleştirici alanları tamamen bağımsız çekmez. Örneğin:
 - mezhep etnik kimliğe göre;
 - dindarlık mezhep ve yaşa göre çekilir.
 
-Sayfa yüklenirken `randomProfile()` çalışır. Kaynak kodda kullanıcıya ait sabit bir başlangıç profili tutulmaz.
+Sayfa yüklenirken `randomProfile()` çalışır.
 
 ## Bilimsel sürüm için yapılması gerekenler
 
