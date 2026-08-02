@@ -31,7 +31,7 @@
     button{cursor:pointer}
     a{color:var(--blue-dark)}
     .page{
-      width:min(1180px,calc(100% - 32px));
+      width:min(1280px,calc(100% - 40px));
       margin:0 auto;
       padding:18px 0 42px;
     }
@@ -98,10 +98,10 @@
 
     .builder{
       font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(1.52rem,3.1vw,2.55rem);
-      line-height:1.72;
-      letter-spacing:-.018em;
-      max-width:1110px;
+      font-size:clamp(1.38rem,1.65vw,1.85rem);
+      line-height:1.64;
+      letter-spacing:-.012em;
+      max-width:1240px;
       margin:0 auto 27px;
     }
     .inline-select{
@@ -290,7 +290,7 @@
       .party-row{grid-template-columns:74px minmax(0,1fr) 45px}.card{padding:16px}
     }
     @media (max-width:520px){
-      .page{width:min(100% - 20px,1180px);padding-top:10px}.title-wrap h1{font-size:2.35rem}.builder{font-size:1.38rem;line-height:1.95}.inline-select{border-bottom-width:3px}.w-xwide{min-width:13ch}.header-actions .btn{flex:1}.headline{font-size:2.4rem}.stacked{height:28px}
+      .page{width:min(100% - 20px,1280px);padding-top:10px}.title-wrap h1{font-size:2.35rem}.builder{font-size:1.38rem;line-height:1.95}.inline-select{border-bottom-width:3px}.w-xwide{min-width:13ch}.header-actions .btn{flex:1}.headline{font-size:2.4rem}.stacked{height:28px}
     }
     @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
@@ -484,12 +484,6 @@
     religiosity:[
       ["very","çok dindar ve düzenli ibadet eden"],["religious","dindar ve zaman zaman ibadet eden"],["somewhat","kendini bir ölçüde dindar gören"],["rarely","nadiren ibadet eden"],["never","hiç ibadet etmeyen"],["noanswer","bu konuda cevap vermeyen"]
     ]
-  };
-
-  const DEFAULTS = {
-    gender:"man", age:"25-34", education:"college", employment:"private", income:"q3",
-    settlement:"metro", region:"istanbul", marital:"single", children:"none",
-    ethnicity:"turkish", denomination:"sunni", religiosity:"rarely"
   };
 
   // Log-odds adjustments. Deliberately restrained; this is a transparent prototype, not fitted microdata.
@@ -906,7 +900,6 @@
     for(const [field,opts] of Object.entries(FIELDS)){
       const select=document.getElementById(field);
       opts.forEach(([value,label])=>{const o=document.createElement("option");o.value=value;o.textContent=label;select.appendChild(o)});
-      select.value=DEFAULTS[field];
       select.addEventListener("change",()=>{synchronizeSelections(field);render()});
     }
     synchronizeSelections();
@@ -1000,7 +993,7 @@
     }
   }
 
-  populate(); render();
+  populate(); randomProfile();
   document.getElementById("randomizeBtn").addEventListener("click",randomProfile);
   document.getElementById("copyBtn").addEventListener("click",copyResult);
   const dialog=document.getElementById("methodDialog");
@@ -1010,4 +1003,3 @@
 })();
 </script>
 </body>
-</html>
