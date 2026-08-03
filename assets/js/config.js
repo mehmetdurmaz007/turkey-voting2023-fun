@@ -24,7 +24,7 @@ export const FIELDS = {
   marital:[["single","bekâr"],["married","evli / birlikte yaşıyor"],["divorced","boşanmış / ayrı"],["widowed","dul"]],
   household_size:[["one","tek kişilik hanede"],["two","iki kişilik hanede"],["three","üç kişilik hanede"],["four","dört kişilik hanede"],["fiveplus","beş veya daha fazla kişilik hanede"],["unknown","hane büyüklüğünü belirtmemiş"]],
   home_language:[["turkish","evde çoğunlukla Türkçe"],["kurdish","evde çoğunlukla Kürtçe"],["arabic_other","evde Arapça veya başka bir dil"],["unknown","evde konuşulan dili belirtmemiş"]],
-  attendance:[["never","hiç katılmıyor"],["yearly","yılda yaklaşık bir kez katılıyor"],["several_year","yılda birkaç kez katılıyor"],["monthly","ayda yaklaşık bir kez katılıyor"],["weekly","haftada en az bir kez katılıyor"],["unknown","katılma sıklığını belirtmemiş"]]
+  attendance:[["never","hiç katılmıyor"],["yearly","yılda yaklaşık bir kez katılıyor"],["several_year","yılda birkaç kez katılıyor"],["monthly","ayda yaklaşık bir kez katılıyor"],["weekly","haftada en az bir kez katılıyor"],["unknown","katılım sıklığını belirtmemiş"]]
 };
 
 export const FIELD_LABELS = Object.fromEntries(

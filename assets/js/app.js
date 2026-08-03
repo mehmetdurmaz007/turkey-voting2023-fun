@@ -1,4 +1,4 @@
-import {FIELDS, FIELD_LABELS, PARTY_META, SHARE_URL} from "./config.js?v=bayes-2";
+import {FIELDS, FIELD_LABELS, PARTY_META, SHARE_URL} from "./config.js?v=bayes-4";
 import {predictProfile, supportForProfile, rankedDrivers, validateModelShape, credibleIntervalText} from "./bayes.js?v=bayes-2";
 
 let MODEL = null;
