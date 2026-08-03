@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>Bir Türkiye Seçmeni Oluştur — 2023 Seçimleri Seçmen Profilleri</title>
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <meta name="description" content="2023 Türkiye seçimleri için hiyerarşik Bayesçi seçmen profili modeli." />
+  <title>Bir Türkiye Seçmeni Oluştur — Bayesçi 2023 Modeli</title>
+  <link rel="stylesheet" href="assets/css/styles.css?v=bayes-2" />
 </head>
 <body>
   <main class="page">
@@ -13,7 +14,7 @@
     <header>
       <div class="title-wrap">
         <h1>Bir Türkiye seçmeni oluştur</h1>
-        <div class="eyebrow">2023 genel seçimi · etkileşim denetimli geriye dönük model</div>
+        <div class="eyebrow">2023 genel seçimi · hiyerarşik Bayesçi model</div>
       </div>
       <div class="header-actions">
         <button class="btn icon" id="randomizeBtn" type="button" aria-label="Tutarlı bir profili rastgele oluştur">
@@ -24,9 +25,9 @@
       </div>
     </header>
 
-    <div class="notice" role="note">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4m0 4h.01"/><path d="M10.3 3.7 2.5 17.2A2 2 0 0 0 4.2 20h15.6a2 2 0 0 0 1.7-2.8L13.7 3.7a2 2 0 0 0-3.4 0Z"/></svg>
-      <div><strong>Bu bir 2026 oy niyeti tahmini değildir.</strong> Sonuç, seçtiğiniz profile benzer bir seçmenin 2023’teki muhtemel davranışını canlandıran şeffaf bir araştırma prototipidir. Kesin bireysel tahmin olarak okunmamalıdır.</div>
+    <div class="notice" id="modelNotice" role="status" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <div><strong>Model yükleniyor.</strong> Posterior katsayı dosyası denetleniyor.</div>
     </div>
 
     <section class="builder" aria-label="Seçmen profili oluşturucu">
@@ -38,6 +39,8 @@
       <span class="inline-select w-wide"><label class="sr-only" for="education">eğitim düzeyi</label><select id="education" data-field="education"></select></span>
       eğitimli ve
       <span class="inline-select w-xwide"><label class="sr-only" for="employment">çalışma durumu</label><select id="employment" data-field="employment"></select></span>.
+      Ana meslek grubu
+      <span class="inline-select w-xwide"><label class="sr-only" for="occupation">ana meslek grubu</label><select id="occupation" data-field="occupation"></select></span>.
       Hanesi
       <span class="inline-select w-wide"><label class="sr-only" for="income">gelir düzeyi</label><select id="income" data-field="income"></select></span>.
       <span class="inline-select w-xwide"><label class="sr-only" for="settlement">yerleşim türü</label><select id="settlement" data-field="settlement"></select></span>,
@@ -45,35 +48,36 @@
       bölgesinde yaşıyor. Kendisi
       <span class="inline-select w-wide"><label class="sr-only" for="marital">medeni durum</label><select id="marital" data-field="marital"></select></span>
       ve
-      <span class="inline-select w-wide"><label class="sr-only" for="children">çocuk sayısı</label><select id="children" data-field="children"></select></span>.
-      Etnik kimliğini
-      <span class="inline-select w-wide"><label class="sr-only" for="ethnicity">etnik kimlik</label><select id="ethnicity" data-field="ethnicity"></select></span>
-      olarak belirtiyor;
-      <span class="inline-select w-wide"><label class="sr-only" for="denomination">inanç veya mezhep</label><select id="denomination" data-field="denomination"></select></span>
-      ve
-      <span class="inline-select w-xwide"><label class="sr-only" for="religiosity">dindarlık</label><select id="religiosity" data-field="religiosity"></select></span>.
+      <span class="inline-select w-xwide"><label class="sr-only" for="household_size">hane büyüklüğü</label><select id="household_size" data-field="household_size"></select></span>.
+      <span class="inline-select w-xwide"><label class="sr-only" for="home_language">evde konuşulan dil</label><select id="home_language" data-field="home_language"></select></span>
+      konuşuyor ve
+      <span class="inline-select w-xwide"><label class="sr-only" for="attendance">dinî hizmetlere katılım sıklığı</label><select id="attendance" data-field="attendance"></select></span>.
     </section>
 
     <section class="results-shell" aria-live="polite">
       <div class="result-head">
         <div>
-          <div class="result-kicker">14 Mayıs 2023 milletvekili seçimi</div>
+          <div class="result-kicker">14 Mayıs 2023 milletvekili seçimi · geçerli oy koşuluyla</div>
           <h2 class="headline" id="headline">—</h2>
         </div>
         <div class="confidence" id="confidenceBox"></div>
       </div>
 
       <div class="stacked-wrap">
-        <div class="stacked" id="stackedBar" aria-label="Tahmini tercihlerin dağılımı"></div>
+        <div class="stacked" id="stackedBar" aria-label="Posterior ortalama parti tercihleri"></div>
         <div class="legend" id="legend"></div>
       </div>
 
       <div class="dashboard">
         <article class="card">
-          <h2>Tüm olasılıklar</h2>
+          <div class="card-heading-row">
+            <h2>Parti olasılıkları</h2>
+            <span class="interval-badge" id="intervalBadge">%80 güvenilir aralık</span>
+          </div>
+          <div class="party-table-head" aria-hidden="true"><span>Parti</span><span>Posterior ortalama</span><span>Aralık</span></div>
           <div id="partyRows"></div>
           <div class="drivers">
-            <h3>Modeli en çok iten profil unsurları</h3>
+            <h3>Öngörüyü en çok değiştiren etkin terimler</h3>
             <div class="chips" id="driverChips"></div>
           </div>
         </article>
@@ -81,24 +85,31 @@
         <aside class="card">
           <h2>Katılım ve ikinci tur</h2>
           <p class="turnout-number" id="turnoutNumber">—</p>
-          <p class="turnout-sub">14 Mayıs seçiminde sandığa gitme olasılığı. Geçersiz oy ayrı modellenmemiştir.</p>
+          <p class="turnout-sub" id="turnoutSub">14 Mayıs seçiminde sandığa gitme posterior ortalaması.</p>
           <div class="gauge" aria-hidden="true"><div id="turnoutGauge"></div></div>
 
           <div class="runoff">
-            <div class="runoff-label"><span>28 Mayıs 2023 ikinci tur</span><span id="runoffHeadline">—</span></div>
-            <div class="runoff-bar" id="runoffBar" aria-label="İkinci tur tahmini">
+            <div class="runoff-label"><span>28 Mayıs 2023 · geçerli oy koşuluyla</span><span id="runoffHeadline">—</span></div>
+            <div class="runoff-bar" id="runoffBar" aria-label="İkinci tur posterior ortalama tahmini">
               <div class="erdogan" id="erdoganSeg"></div>
               <div class="kilicdaroglu" id="kilicdarogluSeg"></div>
-              <div class="runoff-abstain" id="runoffAbstainSeg"></div>
             </div>
             <div class="runoff-values"><span id="erdoganValue"></span><span id="kilicdarogluValue"></span></div>
           </div>
+
+          <div class="support-box" id="supportBox"></div>
         </aside>
       </div>
 
       <div class="footer-tools">
-        <div class="model-note"><strong>Model durumu:</strong> YSK’nin resmî 2023 sonuçları ulusal başlangıç dağılımını verir. Profil etkileri, CSES/WVS’de ölçülebilen değişkenlere göre kurulmuş, ana etkileri, iki ve üç değişkenli koşullu etkileşimleri ve profil-tutarlılık denetimleri olan; fakat henüz doğrudan mikroveri üzerinde tahmin edilmemiş açık bir katsayı prototipidir.</div>
-        <button class="btn primary" id="copyBtn" type="button">sonucu kopyala</button>
+        <div class="model-note" id="modelNote"><strong>Model durumu:</strong> —</div>
+        <div class="result-actions">
+          <button class="btn" id="copyBtn" type="button">sonucu kopyala</button>
+          <button class="btn x-share" id="shareXBtn" type="button" aria-label="Mevcut sonucu X'te paylaş">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+            X'te paylaş
+          </button>
+        </div>
       </div>
     </section>
   </main>
@@ -106,28 +117,42 @@
   <dialog id="methodDialog">
     <div class="modal-head"><h2>Yöntem, sınırlar ve veri kaynakları</h2><button class="close-btn" id="closeMethod" aria-label="Pencereyi kapat">×</button></div>
     <div class="modal-body">
-      <div class="status-box"><strong>Önemli:</strong> Bu dosyadaki katsayılar, gerçek CSES mikroverisi üzerinde tahmin edilmiş nihai katsayılar değildir. Arayüzü, veri şemasını, tutarlı rastgeleleştirmeyi ve model mimarisini çalışan hâle getiren bir prototiptir. Bu nedenle yüzde değerleri kesin anket tahmini gibi kullanılmamalıdır.</div>
+      <div class="status-box" id="methodStatus"><strong>Model dosyası denetleniyor.</strong></div>
 
-      <h3>Model ne yapıyor?</h3>
-      <p>Her parti için 2023 resmî oy payının logaritması başlangıç puanı olarak alınır. Seçilen demografik özellikler bu puanlara küçük log-olasılık katkıları ekler. Bölge × etnik kimlik, mezhep × dindarlık, yaş × öğrencilik, eğitim × yerleşim ve medeni durum × çocuk sayısı × dindarlık gibi bağımlılıklar ayrıca uygulanır. Çocuk sahibi olmanın etkisi tek başına sabit kabul edilmez; evlilik, dindarlık, cinsiyet ve çalışma durumuna göre koşullandırılır. Sonuçlar softmax dönüşümüyle toplamı yüzde 100 olan olasılıklara çevrilir.</p>
-      <p>Katılım ayrı bir lojistik modelle hesaplanır. Parti olasılıkları katılımla çarpılır ve kalan pay “sandığa gitmeme” olarak gösterilir. İkinci tur hesabı, parlamenter parti olasılıklarının ittifak bloklarına dönüşümü ve doğrudan profil etkilerinin birlikte kullanılmasıyla üretilir.</p>
+      <h3>Temel model</h3>
+      <p>Milletvekili tercihi, sandığa katılım ve Cumhurbaşkanlığı ikinci tur tercihi ayrı modellerdir. Parti tercihi ağırlıklı hiyerarşik çok kategorili lojistik modelle; katılım ve ikinci tur ise ağırlıklı hiyerarşik ikili lojistik modellerle tahmin edilir. Site tek bir katsayı seti kullanmaz: posterior dağılımdan dışa aktarılan çok sayıda katsayı çekilişi üzerinde öngörü üretir.</p>
 
-      <h3>Neden bu değişkenler?</h3>
-      <p>CSES Türkiye 2023 anketi yaş, cinsiyet, eğitim, çalışma durumu, gelir, yerleşim, dinî pratik ve oy davranışı gibi çekirdek değişkenleri ölçer. WVS Türkiye 2018; mezhep, etnik kimlik, çocuk sayısı ve değer yönelimleri gibi ek değişkenler sağlar. Nihai sürümde CSES ana tahmin veri seti, WVS ise yardımcı öncüller ve duyarlılık kontrolleri için kullanılmalıdır.</p>
+      <h3>Ulusal sonuçlara kalibrasyon</h3>
+      <p>CSES’de açıklanan parti oyları resmî sonuçlardan belirgin biçimde sapmaktadır. Bu nedenle her posterior çekilişinde yalnız sabit terimler, ağırlıklı CSES profil dağılımı üzerinde YSK’nın ulusal oy paylarını ve resmî katılım/ikinci tur marjinlerini yeniden üretecek biçimde ayarlanır. Demografik katsayılar ve etkileşimler değiştirilmez. Bu işlem ulusal marjinleri düzeltir; ölçüm hatasını veya eksik değişkenleri ortadan kaldırmaz.</p>
 
-      <h3>Resmî ve kamusal kaynaklar</h3>
-      <ul class="source-list">
-        <li><a href="https://cses.org/data-download/cses-module-6-2021-2026/" target="_blank" rel="noopener">CSES Module 6 (Türkiye 2023 dâhil) veri ve dokümantasyon sayfası</a></li>
-        <li><a href="https://cses.org/wp-content/uploads/2024/12/TUR_2023_Design.pdf" target="_blank" rel="noopener">CSES Türkiye 2023 araştırma tasarım raporu</a></li>
-        <li><a href="https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp" target="_blank" rel="noopener">World Values Survey Wave 7 dokümantasyonu</a></li>
-        <li><a href="https://www.ysk.gov.tr/doc/dosyalar/docs/14Mayis2023/KesinSecimSonuclari/ULKE_GENELI_TOPLAMI_MM24.pdf" target="_blank" rel="noopener">YSK: 14 Mayıs 2023 milletvekili seçimi ülke geneli kesin sonucu</a></li>
-        <li><a href="https://www.ysk.gov.tr/doc/dosyalar/docs/14Mayis2023/KesinSecimSonuclari/2023CB-TumSecimSonucuIkinciTur.pdf" target="_blank" rel="noopener">YSK: 28 Mayıs 2023 Cumhurbaşkanlığı ikinci tur kesin sonucu</a></li>
+      <h3>Gruplar neden bağımsız kabul edilmiyor?</h3>
+      <p>Ana etkilerin yanında yaş × eğitim, bölge × yerleşim türü, evde konuşulan dil × bölge, medeni durum × hane büyüklüğü ve cinsiyet × dinî hizmetlere katılım etkileşimleri bulunur. Bu terimler hiyerarşik öncüllerle kısmi havuzlanır. Seyrek hücreler kendi küçük örneklemlerinin rastlantısal oranlarına teslim edilmez; daha geniş gruplara doğru çekilir.</p>
+
+      <h3>Gösterilen sayılar</h3>
+      <p>Her yüzde posterior ortalamadır. Parantezdeki aralık, varsayılan olarak posterior öngörülerin ortadaki yüzde 80’ini gösteren Bayesçi güvenilir aralıktır. Bu, aynı profildeki herkesin aynı davranacağı anlamına gelmez. Aralıklar parametre belirsizliğini yansıtır; ölçüm hatası, eksik değişkenler ve anket yanlılığı bütünüyle ortadan kalkmaz.</p>
+
+      <h3>Rastgele profil</h3>
+      <p>Eğitilmiş model dosyası gerçek anket verisinden demografik ağırlıkla örneklenmiş anonim profil satırları içeriyorsa “rastgele seç” bunlardan birini kullanır. Böylece yaş, eğitim, medeni durum, hane büyüklüğü, yerleşim ve dil birbirinden bağımsız zarlar gibi çekilmez. Mikroveri profil havuzu bulunmazsa arayüz yalnız geliştirme amaçlı koşullu yedek üreticiye döner.</p>
+
+      <h3>Bilimsel yayın eşiği</h3>
+      <ul>
+        <li>Ham mikroveriyi lisansı izin vermedikçe GitHub’a koymayın.</li>
+        <li>Değişken eşlemesini kod kitabına göre açıkça belgeleyin.</li>
+        <li>Yakınsama ölçütlerini, posterior öngörü kontrollerini, holdout log loss ve Brier skorlarını yayımlayın.</li>
+        <li>Model ulusal seçim marjinlerine sabit-terim kalibrasyonu uygular; bu, tam TÜİK poststratifikasyonu değildir.</li>
+        <li>CSES Module 6 ileri sürüm olduğundan veri sürümünü ve bilinen düzeltmeleri sabitleyin.</li>
       </ul>
 
-      <h3>Yorumlama</h3>
-      <p>“%42 CHP” ifadesi, bu kişinin gerçekten CHP’ye oy verme ihtimalinin ölçüldüğü anlamına gelmez. Modelin seçilen özelliklere atadığı göreli ağırlıkların ürettiği, 2023’e sabitlenmiş bir benzerlik tahminidir. Özellikle etnik kimlik ve mezhep gibi hassas değişkenler bireysel davranışı belirlemez; yalnızca örneklem düzeyindeki ilişkileri yaklaşıklar.</p>
+      <h3>Kamusal kaynaklar</h3>
+      <ul class="source-list">
+        <li><a href="https://cses.org/data-download/cses-module-6-2021-2026/" target="_blank" rel="noopener">CSES Module 6 veri ve dokümantasyon sayfası</a></li>
+        <li><a href="https://cses.org/wp-content/uploads/2024/12/TUR_2023_Design.pdf" target="_blank" rel="noopener">CSES Türkiye 2023 araştırma tasarımı</a></li>
+        <li><a href="https://cses.org/wp-content/uploads/2024/12/TUR_2023_Turkish.pdf" target="_blank" rel="noopener">Türkiye 2023 Türkçe anket formu</a></li>
+        <li><a href="https://www.ysk.gov.tr/doc/dosyalar/docs/14Mayis2023/KesinSecimSonuclari/ULKE_GENELI_TOPLAMI_MM24.pdf" target="_blank" rel="noopener">YSK milletvekili seçimi kesin sonucu</a></li>
+        <li><a href="https://www.ysk.gov.tr/doc/dosyalar/docs/14Mayis2023/KesinSecimSonuclari/2023CB-TumSecimSonucuIkinciTur.pdf" target="_blank" rel="noopener">YSK ikinci tur kesin sonucu</a></li>
+      </ul>
     </div>
   </dialog>
-  <script src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/app.js?v=bayes-2"></script>
 </body>
 </html>
