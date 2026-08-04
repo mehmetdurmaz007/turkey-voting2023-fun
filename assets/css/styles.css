@@ -305,3 +305,300 @@
   .party-table-head{grid-template-columns:70px minmax(0,1fr) 88px}.party-row{grid-template-columns:70px minmax(0,1fr) 88px}.party-range{font-size:.72rem}
   .card-heading-row{align-items:flex-start}.interval-badge{white-space:normal;text-align:center}
 }
+
+/* MOBILE UI V1 START */
+@media (max-width: 640px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .page {
+    width: 100%;
+    padding: 10px 14px 30px;
+  }
+
+  .top-rule {
+    margin-bottom: 12px;
+  }
+
+  header {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .title-wrap h1 {
+    max-width: 11ch;
+    font-size: clamp(2rem, 10vw, 2.7rem);
+    line-height: .96;
+    letter-spacing: -.04em;
+  }
+
+  .eyebrow {
+    margin-top: 9px;
+    font-size: .7rem;
+    line-height: 1.35;
+    letter-spacing: .06em;
+  }
+
+  .header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  .header-actions .btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 10px;
+    font-size: .84rem;
+  }
+
+  .notice {
+    margin-bottom: 16px;
+    padding: 10px 11px;
+    font-size: .82rem;
+  }
+
+  .builder {
+    margin-bottom: 20px;
+    padding: 14px;
+    border: 1px solid #dbe2e4;
+    border-radius: 6px;
+    background: #f8faf9;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .inline-select {
+    max-width: 100%;
+    min-width: 0;
+    margin: .08em .04em;
+    border-bottom-width: 2px;
+  }
+
+  .inline-select select {
+    max-width: 100%;
+    min-height: 38px;
+    padding: .08em 1.1em .08em .08em;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+  }
+
+  .w-age {
+    min-width: 7.5ch;
+  }
+
+  .w-wide {
+    min-width: 10.5ch;
+  }
+
+  .w-xwide {
+    min-width: 12ch;
+  }
+
+  .w-region {
+    min-width: 11ch;
+  }
+
+  .results-shell {
+    margin-top: 6px;
+    padding-top: 20px;
+  }
+
+  .result-head {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .result-kicker {
+    margin-bottom: 6px;
+    font-size: .68rem;
+    line-height: 1.35;
+  }
+
+  .headline {
+    font-size: clamp(2.35rem, 14vw, 3.3rem);
+    line-height: .95;
+  }
+
+  .headline small {
+    display: block;
+    margin-top: .3em;
+    font-size: .38em;
+    line-height: 1.18;
+  }
+
+  .confidence {
+    min-width: 0;
+    padding: 10px 0 0;
+    border-top: 1px solid #d7dfe1;
+    border-left: 0;
+    font-size: .82rem;
+  }
+
+  .stacked-wrap {
+    margin: 14px 0 10px;
+  }
+
+  .stacked {
+    height: 24px;
+  }
+
+  .legend {
+    gap: 6px 10px;
+    font-size: .7rem;
+    line-height: 1.25;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .card {
+    padding: 14px;
+    box-shadow: 0 8px 24px rgba(15, 28, 35, .08);
+  }
+
+  .card-heading-row {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card-heading-row h2 {
+    font-size: .95rem;
+  }
+
+  .interval-badge {
+    padding: 4px 7px;
+    font-size: .66rem;
+  }
+
+  .party-table-head {
+    display: none;
+  }
+
+  .party-row {
+    grid-template-columns: minmax(72px, auto) minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .party-name {
+    font-size: .82rem;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .bar-track {
+    height: 10px;
+  }
+
+  .party-value {
+    font-size: .82rem;
+  }
+
+  .party-range {
+    grid-column: 2 / 4;
+    margin-top: -5px;
+    text-align: right;
+    font-size: .68rem;
+  }
+
+  .turnout-number {
+    font-size: 2.8rem;
+  }
+
+  .runoff-label {
+    align-items: flex-end;
+    gap: 8px;
+    font-size: .76rem;
+  }
+
+  .runoff-label span:first-child {
+    max-width: 72%;
+    line-height: 1.25;
+  }
+
+  .runoff-values {
+    font-size: .75rem;
+  }
+
+  .support-box {
+    font-size: .76rem;
+  }
+
+  .footer-tools {
+    align-items: stretch;
+    margin-top: 18px;
+  }
+
+  .model-note {
+    font-size: .76rem;
+  }
+
+  .result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .result-actions .btn {
+    width: 100%;
+    min-width: 0;
+    padding: 0 8px;
+    font-size: .82rem;
+  }
+
+  dialog {
+    width: calc(100% - 16px);
+    max-height: 92dvh;
+  }
+
+  .modal-head {
+    padding: 14px;
+  }
+
+  .modal-head h2 {
+    font-size: 1rem;
+  }
+
+  .modal-body {
+    max-height: calc(92dvh - 58px);
+    padding: 14px 14px 20px;
+    font-size: .9rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .page {
+    padding-inline: 10px;
+  }
+
+  .header-actions,
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .builder {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .party-row {
+    grid-template-columns: 68px minmax(0, 1fr) auto;
+  }
+}
+/* MOBILE UI V1 END */
